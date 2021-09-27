@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
+import obtenerFilms from '@functions/obtenerFilms';
+import agregarFilm from '@functions/agregarFilm';
 
 const serverlessConfiguration: AWS = {
   service: 'reto-api-rimac',
@@ -31,7 +32,10 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths
-  functions: { hello },
+  functions: {
+    obtenerFilms,
+    agregarFilm
+  },
 };
 
 module.exports = serverlessConfiguration;
