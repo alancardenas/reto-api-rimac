@@ -139,6 +139,14 @@
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/reto-api-rimac-dev*:*:*"
                     }
                   ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:Scan",
+                    "dynamodb:PutItem"
+                  ],
+                  "Resource": "*"
                 }
               ]
             }
@@ -167,7 +175,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/reto-api-rimac/dev/1632715114337-2021-09-27T03:58:34.337Z/reto-api-rimac.zip"
+          "S3Key": "serverless/reto-api-rimac/dev/1632793531052-2021-09-28T01:45:31.052Z/reto-api-rimac.zip"
         },
         "Handler": "src/functions/obtenerFilms/handler.obtenerFilms",
         "Runtime": "nodejs14.x",
@@ -198,9 +206,9 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/reto-api-rimac/dev/1632715114337-2021-09-27T03:58:34.337Z/reto-api-rimac.zip"
+          "S3Key": "serverless/reto-api-rimac/dev/1632793531052-2021-09-28T01:45:31.052Z/reto-api-rimac.zip"
         },
-        "Handler": "src/functions/agregarFilm/handler.main",
+        "Handler": "src/functions/agregarFilm/handler.agregarFilm",
         "Runtime": "nodejs14.x",
         "FunctionName": "reto-api-rimac-dev-agregarFilm",
         "MemorySize": 1024,
@@ -222,24 +230,24 @@
         "AgregarFilmLogGroup"
       ]
     },
-    "ObtenerFilmsLambdaVersionV7fpYhcXDAHehGFglA7FzEitd61iT6C4lO9jut5rRA": {
+    "ObtenerFilmsLambdaVersion0h4vGcuql7QNeK2vqlIgOS4s1psnk4SPzBr2xH9Yo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ObtenerFilmsLambdaFunction"
         },
-        "CodeSha256": "fNcD4CscUWfYSLf10x1d8Y9hEVu5372IUlL6oPOSzvg="
+        "CodeSha256": "M/vcCTCueQ3ysAn+oL2nMPmveQBF6nwOknRqvcce5EE="
       }
     },
-    "AgregarFilmLambdaVersionpZRqtTjc0kngduzekP6Iyspy3EOQGxfU9xrSmGWd4": {
+    "AgregarFilmLambdaVersionS9yyLb0FDn1sPC9fiORcd5RnWMOqOl20LkNxeoxH6zM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AgregarFilmLambdaFunction"
         },
-        "CodeSha256": "fNcD4CscUWfYSLf10x1d8Y9hEVu5372IUlL6oPOSzvg="
+        "CodeSha256": "M/vcCTCueQ3ysAn+oL2nMPmveQBF6nwOknRqvcce5EE="
       }
     },
     "ApiGatewayRestApi": {
@@ -467,7 +475,7 @@
         "AgregarFilmLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1632715111128": {
+    "ApiGatewayDeployment1632793527449": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -555,6 +563,29 @@
           ]
         }
       }
+    },
+    "Film": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        },
+        "TableName": "FilmTable"
+      }
     }
   },
   "Outputs": {
@@ -569,7 +600,7 @@
     "ObtenerFilmsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ObtenerFilmsLambdaVersionV7fpYhcXDAHehGFglA7FzEitd61iT6C4lO9jut5rRA"
+        "Ref": "ObtenerFilmsLambdaVersion0h4vGcuql7QNeK2vqlIgOS4s1psnk4SPzBr2xH9Yo"
       },
       "Export": {
         "Name": "sls-reto-api-rimac-dev-ObtenerFilmsLambdaFunctionQualifiedArn"
@@ -578,7 +609,7 @@
     "AgregarFilmLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AgregarFilmLambdaVersionpZRqtTjc0kngduzekP6Iyspy3EOQGxfU9xrSmGWd4"
+        "Ref": "AgregarFilmLambdaVersionS9yyLb0FDn1sPC9fiORcd5RnWMOqOl20LkNxeoxH6zM"
       },
       "Export": {
         "Name": "sls-reto-api-rimac-dev-AgregarFilmLambdaFunctionQualifiedArn"
